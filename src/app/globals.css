@@ -127,6 +127,25 @@ body {
   transform: translateY(-1px);
 }
 
+/* ─── Tech tag — warm (amber) variant for Experience ── */
+.tech-tag-warm {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  background: rgba(245,158,11,.12);
+  color: #F59E0B;
+  border: 1px solid rgba(245,158,11,.28);
+  transition: all .2s;
+}
+.tech-tag-warm:hover {
+  background: rgba(245,158,11,.22);
+  border-color: rgba(245,158,11,.5);
+  transform: translateY(-1px);
+}
+
 /* ─── Scroll indicator ───────────────────────────── */
 .scroll-indicator {
   display: inline-flex;

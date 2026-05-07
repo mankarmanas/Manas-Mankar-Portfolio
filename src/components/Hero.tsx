@@ -104,16 +104,16 @@ function FloatingShape({ size, top, left, delay, color }: { size: number; top: s
 }
 
 /* ── Floating badge (around photo card) ─────────── */
-function FloatingBadge({ text, icon, style, delay }: { text: string; icon: React.ReactNode; style: React.CSSProperties; delay: number }) {
+function FloatingBadge({ text, icon, style, delay, small }: { text: string; icon: React.ReactNode; style: React.CSSProperties; delay: number; small?: boolean }) {
   return (
     <motion.div
-      className="absolute hidden sm:flex px-3 py-1.5 rounded-full glass border border-border/60 text-sm font-semibold text-text-secondary whitespace-nowrap z-20 shadow-lg"
+      className={`absolute flex rounded-full glass border border-border/60 font-semibold text-text-secondary whitespace-nowrap z-20 shadow-lg ${small ? "px-2.5 py-1 text-xs" : "px-3 py-1.5 text-sm"}`}
       style={style}
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1, y: [0, -6, 0] }}
       transition={{ opacity: { delay: 0.8 + delay, duration: 0.4 }, scale: { delay: 0.8 + delay, duration: 0.4 }, y: { duration: 3 + delay, repeat: Infinity, ease: "easeInOut", delay: delay } }}
     >
-      <span className="flex items-center gap-1.5 text-text-primary">{icon}{text}</span>
+      <span className="flex items-center gap-1 text-text-primary">{icon}{text}</span>
     </motion.div>
   );
 }
@@ -124,6 +124,14 @@ function PhotoCard() {
   const [hovering, setHovering] = useState(false);
   const [spotPos, setSpotPos] = useState({ x: 50, y: 50 });
   const [photoError, setPhotoError] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 640);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
@@ -149,11 +157,11 @@ function PhotoCard() {
   return (
     <div className="relative flex items-center justify-center py-8">
       {/* Floating skill badges */}
-      <FloatingBadge text="AI Engineer"    icon={<Cpu size={11} className="text-primary-light" />}   style={{ top: "8%",   left: "-5%"  }} delay={0}   />
-      <FloatingBadge text="RAG Specialist" icon={<Brain size={11} className="text-pink-400" />}      style={{ top: "22%",  right: "-8%" }} delay={1.2} />
-      <FloatingBadge text="LangChain"      icon={<Zap size={11} className="text-accent" />}          style={{ bottom: "16%", right: "-5%" }} delay={0.6} />
-      <FloatingBadge text="Full-Stack"     icon={<Code2 size={11} className="text-green-400" />}     style={{ bottom: "8%", left: "-3%" }} delay={1.8} />
-      <FloatingBadge text="GPA 3.84"       icon={<Star size={11} className="text-yellow-400" />}     style={{ top: "50%", right: "-10%", transform: "translateY(-50%)" }} delay={2.4} />
+      <FloatingBadge text="AI Engineer"    icon={<Cpu   size={isMobile ? 9 : 11} className="text-primary-light" />} small={isMobile} style={{ top: isMobile ? "6%"  : "8%",   left:  isMobile ? "3%"  : "-5%"                                }} delay={0}   />
+      <FloatingBadge text="RAG Specialist" icon={<Brain size={isMobile ? 9 : 11} className="text-pink-400"     />} small={isMobile} style={{ top: isMobile ? "6%"  : "22%",  right: isMobile ? "3%"  : "-8%"                                }} delay={1.2} />
+      <FloatingBadge text="Full-Stack"     icon={<Code2 size={isMobile ? 9 : 11} className="text-green-400"    />} small={isMobile} style={{ bottom: isMobile ? "3%" : "8%", left: isMobile ? "4%" : "-3%" }} delay={1.8} />
+      <FloatingBadge text="GPA 3.84"       icon={<Star  size={isMobile ? 9 : 11} className="text-yellow-400"   />} small={isMobile} style={{ top: isMobile ? "52%" : "50%",  right: isMobile ? "3%"  : "-10%", transform: isMobile ? "none" : "translateY(-50%)" }} delay={2.4} />
+      <FloatingBadge text="LangChain"      icon={<Zap   size={isMobile ? 9 : 11} className="text-accent"       />} small={isMobile} style={{ bottom: isMobile ? "24%" : "16%", right: isMobile ? "3%"  : "-5%"                                }} delay={0.6} />
 
       {/* 3D perspective wrapper */}
       <motion.div
@@ -164,7 +172,7 @@ function PhotoCard() {
         onMouseLeave={handleMouseLeave}
         whileHover={{ scale: 1.03 }}
         transition={{ type: "spring", stiffness: 200, damping: 20 }}
-        className="relative w-64 h-[340px] sm:w-[22.5rem] sm:h-[420px] lg:w-[24.5rem] lg:h-[520px] rounded-[2.25rem] cursor-pointer select-none"
+        className="relative w-[300px] h-[440px] sm:w-[22.5rem] sm:h-[420px] lg:w-[24.5rem] lg:h-[520px] rounded-[2.25rem] cursor-pointer select-none"
       >
         {/* Gradient border */}
         <div className="absolute inset-0 rounded-3xl p-px"
@@ -265,7 +273,7 @@ export default function Hero() {
       <ParticleCanvas />
 
       {/* Main content — split layout on desktop */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 w-full pt-10 pb-4">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 w-full pt-24 md:pt-10 pb-4">
         <div className="grid md:grid-cols-2 gap-8 md:gap-8 items-center">
 
           {/* Left: text content */}
@@ -357,21 +365,35 @@ export default function Hero() {
             <PhotoCard />
           </motion.div>
         </div>
+
+        {/* Mobile-only scroll indicator — sits between photo card and About */}
+        <motion.button
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.6 }}
+          onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}
+          className="flex sm:hidden flex-col items-center gap-2 text-text-muted mt-2 mb-2 mx-auto"
+          aria-label="Scroll down"
+        >
+          <span className="text-[10px] font-semibold tracking-[0.3em] uppercase">Scroll</span>
+          <motion.div animate={{ y: [0, 7, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
+            <ArrowDown size={16} />
+          </motion.div>
+        </motion.button>
       </div>
 
-      {/* Scroll indicator */}
+      {/* Desktop scroll indicator */}
       <motion.button
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.6 }}
         onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}
-        whileHover={{ y: -4 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-text-muted hover:text-text-secondary transition-colors group z-10"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden sm:flex flex-col items-center gap-2 text-text-muted z-10"
         aria-label="Scroll down"
       >
         <span className="text-[10px] font-semibold tracking-[0.3em] uppercase">Scroll</span>
         <motion.div animate={{ y: [0, 7, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
-          <ArrowDown size={16} className="group-hover:text-primary-light transition-colors" />
+          <ArrowDown size={16} />
         </motion.div>
       </motion.button>
     </section>

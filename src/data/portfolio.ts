@@ -262,7 +262,7 @@ export const portfolioData = {
   stats: [
     { label: "GPA (MS CS)", value: "3.84" },
     { label: "Projects Built", value: "10+" },
-    { label: "Efficiency Gains", value: "50–70%" },
+    { label: "Efficiency Gains", value: "90–98%" },
     { label: "Hackathon Award", value: "🏆" },
   ],
 };

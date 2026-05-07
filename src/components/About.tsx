@@ -23,10 +23,10 @@ export default function About() {
   const ref        = useRef(null);
   const isInView   = useInView(ref, { once: true, margin: "-80px" });
   const [bioTyped, setBioTyped] = useState(false);
-  const [typingSpeed, setTypingSpeed] = useState<number>(92);
+  const [typingSpeed, setTypingSpeed] = useState<92 | 99>(92);
 
   useEffect(() => {
-    const update = () => setTypingSpeed(window.innerWidth >= 640 ? 99 : 92);
+    const update = () => setTypingSpeed(window.innerWidth >= 640 ? 99 : 92 as 92 | 99);
     update();
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);

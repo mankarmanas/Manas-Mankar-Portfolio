@@ -4,6 +4,8 @@
 
 Live portfolio showcasing my work in AI engineering, full-stack development, and intelligent system design.
 
+🌐 **Live Site:** [www.manasmankar.com](https://www.manasmankar.com)
+
 ---
 
 ## 🚀 Tech Stack
@@ -120,7 +122,7 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ## 🔗 Connect
 
-- **Portfolio** — [manas-mankar.vercel.app](https://manas-mankar.vercel.app)
+- **Portfolio** — [www.manasmankar.com](https://www.manasmankar.com)
 - **LinkedIn** — [linkedin.com/in/manas-mankar](https://linkedin.com/in/manas-mankar)
 - **GitHub** — [github.com/mankarmanas](https://github.com/mankarmanas)
 - **Email** — manasmahendra5@gmail.com

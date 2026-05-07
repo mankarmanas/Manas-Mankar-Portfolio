@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:mobile": "next dev --hostname 192.168.1.175",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -13,7 +14,7 @@
     "clsx": "^2.1.1",
     "framer-motion": "^11.3.0",
     "lucide-react": "^0.400.0",
-    "next": "14.2.5",
+    "next": "^14.2.35",
     "react": "^18",
     "react-dom": "^18",
     "react-parallax-tilt": "^1.7.326",
